@@ -1,0 +1,46 @@
+<html>
+  <head>
+    <script type='text/javascript' src="jsonreq.js"></script>
+    <script>
+      function LoadScript(id,src) {
+      var newScript = null;
+      if (id != null) 
+      {
+      newScript = document.getElementById(id);
+      if (newScript) return;
+      }
+
+      var headID = document.getElementsByTagName("head")[0];      
+      newScript = document.createElement('script'); 
+      newScript.id = id;
+      newScript.type = 'text/javascript';
+      newScript.src = src;
+      headID.appendChild(newScript);
+      }
+
+      function LoadScriptText(id,src) {
+      var newScript = null;
+      if (id != null) 
+      {
+      newScript = document.getElementById(id);
+      if (newScript) return;
+      }
+
+      var headID = document.getElementsByTagName("head")[0];      
+      newScript = document.createElement('script'); 
+      newScript.id = id;
+      newScript.type = 'text/javascript';
+      headID.appendChild(newScript);
+      ReplaceChildrenWithUri(id,src);
+      }
+
+
+    </script>
+    <script id="here">
+    </script>
+  </head>
+  <body>
+    <input type="submit" value="InsertScript" onclick="LoadScript(null,'tst.js');" />
+    <input type="submit" value="InsertText" onclick="LoadScriptText('mys2','tst.js');" />
+  </body>
+</html>

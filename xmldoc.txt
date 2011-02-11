@@ -1,0 +1,80 @@
+Any tag is allowed; you can write handlers for them.
+
+The following tags are defined:
+
+TagVariable = "var"
+TagFunction = "fn"
+TagParam    = "arg"
+TagClass    = "class"
+TagMethod   = "method"
+TagField    = "field"
+TagCtor     = "ctor"
+TagFile     = "file"
+TagDoc      = "doc"
+TagSection  = "section"
+TagBrief    = "brief"
+TagDesc     = "desc"
+
+
+
+Normal Language/Project Tags:
+
+TagVariable = "var"
+TagFunction = "fn"
+TagClass    = "class"
+TagParam    = "arg"
+TagClass    = "class"
+TagField    = "field"
+TagCtor     = "ctor"
+
+TagFile     = "file"
+
+
+Documentation Tags:
+
+TagBrief    = "brief"
+TagDesc     = "desc"
+
+
+Structure Tags:
+
+TagSection  = "section"
+  The section tag can occur at any time to place contained entities within a separate (nestable) section.  This allows you to capture structure that is useful in documentation but not part of your language.  For example, you might have a section "Global Variables" and another section "Constants".
+  The same section can be specified multiple times within a file, and in separate files.
+
+
+Attributes:
+
+name: this names all the entities.  Often this attribute is automatically inserted by the parser by pulling it from the code itself.
+
+Examples: 
+
+# <var name="i">the loop counter</var>
+i = 10
+
+#<section name="Constants">
+...
+#</section>
+  
+
+linenum: The line number the tag came from.  This attribute is automatically inserted by the parser.
+
+
+view: What perspective you are looking at the module from.
+
+values: 
+  "interface": The normal user (default)
+  "underface": The interface into lower level software; for example, in a graphics editor class the underface could be functions that implement basic draw functionality like a point or line
+  "internal": Only used internally
+
+You can specify more than one by comma separating
+
+deprecated:
+  "true": This entity (function, class, variable) is deprecated
+  "false": (default) It is not deprecated.
+
+type:
+  The type of the variable (even in untyped languages, this should be set to the types the parameter can take (comma separated list), or the type of the variable)
+
+base:
+  Base classes (if any)
