@@ -32,8 +32,8 @@ def importAndRun(modul,cmdlst):
       (filename,html) = eval (c,generEnv,locals)
       #print "Generated %s" % filename
   except ImportError, e:
-    print "Missing module: %s" % modul
-    print "Exception: %s" % str(e)
+    print "Missing or Errored module: %s" % modul
+    print "Import exception: %s" % str(e)
 
 #? </section>
 
@@ -79,22 +79,15 @@ def gen(direc,xml,cfg):
 
   # Generate the lowest level pages
   for sect in cfg["sections"]:
-    # Look up the page implementation for this section
-    pi = htmlcfg["pageimplementers"].get(sect,None)
-    if pi:
-      importAndRun(pi,[("%s.generate(obj,cfg)" % pi,{"obj":obj,"cfg":cfg}) for obj in tagDict[sect]])
-      # Pull it in
-      #exec "import %s" % pi in generEnv
-      # And run it over every object in the section
-      #for obj in tagDict[sect]:
-      #  (filename,html) = eval("%s.generate(obj,cfg)" % pi,generEnv,{"obj":obj,"cfg":cfg})
-    pi = htmlcfg["indeximplementers"].get(sect,None)
-    if pi:
-      # Pull it in
-      #exec "import %s" % pi in generEnv
-      # And run it
-      #(filename,html) = eval("%s.generate(obj,cfg)" % pi,generEnv,{"obj":tagDict[sect],"cfg":cfg})
-      importAndRun(pi,[("%s.generate(obj,cfg)" % pi,{"obj":tagDict[sect],"cfg":cfg})])
+    if tagDict.has_key(sect):
+      # Look up the page implementation for this section
+      pi = htmlcfg["pageimplementers"].get(sect,None)
+      if pi:
+        importAndRun(pi,[("%s.generate(obj,cfg)" % pi,{"obj":obj,"cfg":cfg}) for obj in tagDict[sect]])
+
+      pi = htmlcfg["indeximplementers"].get(sect,None)
+      if pi:
+        importAndRun(pi,[("%s.generate(obj,cfg)" % pi,{"obj":tagDict[sect],"cfg":cfg})])
 
   for nav in cfg["html"]["nav"]:
     name = nav[0]

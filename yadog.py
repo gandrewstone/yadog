@@ -35,12 +35,19 @@ def info(type, value, tb):
 sys.excepthook = info
 
 
-def fileWalkFlatten(oswalk):
+def fileWalkFlatten(oswalk, butnot=None):
+  if butnot is None: butnot = []
   f = []
   for (path,dnames,fnames) in oswalk:
+    cnt = 0
+    # eliminate specified directories
+    while cnt < len(dnames):
+      if dnames[cnt] in butnot:
+        del dnames[cnt]
+      else: cnt+=1
+
     for fil in fnames:
-      f.append(os.path.join(path,fil))
-#  print f
+        f.append(os.path.join(path,fil))
   return f
 
 oldcfg={"sections":["section","file","class","fn","var"],
@@ -74,7 +81,7 @@ juicedPyShellcfg={"project":{'name':'Juiced PyShell: A blending of Firefox and P
        "skin":"juicedskin",
        "pageimplementers": {"class":"jsclasspage","file":"jsfilepage"},
        "nav": [ ("home","jshome"),("Examples","jssection",("Examples",)), ("search","jssearch"),("idx","jsindex") ],
-       "indeximplementers": { "class":"jsclassindexpage","file":"jsfileindexpage","section":"jssectionindespage"},
+       "indeximplementers": { "class":"jsclassindexpage","file":"jsfileindexpage","section":"jssectionindexpage"},
        "quicklists": {"History":"jsqhist","Sections":"jsqsec","Classes":"jsqclass","Files":"jsqfile"},
        "misc": { "frame":"jsframe"}
        }
@@ -185,8 +192,8 @@ def regularize(node,zzdepth=0):
 
   return node
 
-def main(prjPfx, top,cfg):
-  allfiles = fileWalkFlatten(os.walk(prjPfx + top))
+def main(prjPfx, top,butnot, cfg):
+  allfiles = fileWalkFlatten(os.walk(prjPfx + top),butnot)
 
   allxml = []
   for f in allfiles:
@@ -224,11 +231,12 @@ def main(prjPfx, top,cfg):
 
 def Test():
   #pdb.set_trace()
-  main("/me/hw/arduino/arduino-m5451-current-driver/latest/apps/", "",Lightuinocfg)
-  #main("/me/code/", "juicedpyshell",juicedPyShellcfg)
-  #main("/me/code/", "yadog",yadogcfg)
+  main("/me/hw/arduino/arduino-m5451-current-driver/latest/lightuino/", "", None, Lightuinocfg)
+  # main("/me/code/", "juicedpyshell", None, juicedPyShellcfg)
+  #main("/me/code/", "yadog",["kid"],yadogcfg)
 #  main(".")
 
 if __name__ == "__main__":
   top = sys.argv[1]
   main(top)
+

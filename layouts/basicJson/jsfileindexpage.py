@@ -3,10 +3,6 @@ This module generates an html page based on some class
 """
 import pdb
 
-import sys
-sys.path.append("/me/code")
-
-
 from PyHtmlGen.gen import *
 from PyHtmlGen.document import *
 from PyHtmlGen.htmldoc import *

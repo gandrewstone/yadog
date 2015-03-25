@@ -6,9 +6,6 @@ import pdb
 import ast
 import re
 
-import sys
-sys.path.append("/me/code")
-
 from PyHtmlGen.document import *
 
 from common import *

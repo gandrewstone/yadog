@@ -3,10 +3,6 @@ This module generates an html page that lists all classes
 """
 import pdb
 
-import sys
-sys.path.append("/me/code")
-
-
 from PyHtmlGen.gen import *
 from PyHtmlGen.document import *
 from PyHtmlGen.htmldoc import *

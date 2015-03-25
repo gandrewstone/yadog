@@ -4,7 +4,7 @@ This module generates a client-side search
 import pdb
 
 import sys
-sys.path.append("/me/code")
+sys.path.append(".")
 
 import kid
 

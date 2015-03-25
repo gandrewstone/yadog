@@ -2,10 +2,6 @@
 This module generates a client-side search
 """
 import pdb
-
-import sys
-sys.path.append("/me/code")
-
 import kid
 
 from PyHtmlGen.gen import *

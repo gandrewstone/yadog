@@ -7,8 +7,7 @@ import ast
 import re
 
 import sys
-sys.path.append("/me/code")
-
+sys.path.append(".")
 from PyHtmlGen.document import *
 
 from common import *
@@ -246,16 +245,17 @@ def findRelevantTag(midom,line):
 
 def fixupFileDocstring(xml):
   # This is a docstring that should be associated with the whole file
-  if xml.children_:  # If there is ANY documentation at all:
-    t = xml.children_[0]
+  tmp = filter(lambda x: isInstanceOf(x, microdom.MicroDom), xml.children_)
+  if tmp:  # If there is ANY documentation at all:
+    t = tmp[0]
     if int(t.linenum) == 1:
       #pdb.set_trace()
       if t.tag_ == "_":
         (briefText,sp,desc) = t.data_.partition("\n")
         t.data_ = desc.strip()
-        if type(t.children_[0]) in StringTypes:  # Clean it up in the children list as well
-          (briefText,sp,desc) = t.children_[0].partition("\n")
-          t.children_[0] = desc.strip()
+#        if type(t.children_[0]) in StringTypes:  # Clean it up in the children list as well
+#          (briefText,sp,desc) = tmp[0].partition("\n")
+#          t.children_[0] = desc.strip()
 
         xml.addChild(microdom.MicroDom({"tag_":TagBrief},[briefText.strip()]))
         t.reTag(TagDesc)
@@ -317,7 +317,9 @@ def extractXml(prjPfx, filename):
         
       if len(varnames) == 1:
         varnames = varnames[0]
-      val=""
+
+      # I'm trying to grab the value of an assignment to put into the documentation, i.e. MY_CONST = 50
+      val=None
       try:
         val = node.value.n # for numbers
       except: pass     
@@ -328,13 +330,20 @@ def extractXml(prjPfx, filename):
         val = node.value.id # for names (modules)
       except: pass
       
-      if val == "":
-        # values that can't reasonably be documented
+      if val == None:
+        # But if the assignment is complex, then it does not make any sense to grab it
+        # But maybe you can make sense of these and figure out some cool documentation to add?
         if isInstanceOf(node.value,ast.Subscript): pass
         elif isInstanceOf(node.value,ast.Dict): pass
         elif isInstanceOf(node.value,ast.List): pass
         elif isInstanceOf(node.value,ast.Call): pass
         elif isInstanceOf(node.value,ast.Attribute): pass
+        elif isInstanceOf(node.value,ast.BinOp): pass
+        elif isInstanceOf(node.value,ast.IfExp): pass
+        elif isInstanceOf(node.value,ast.Tuple): pass
+        elif isInstanceOf(node.value,ast.Lambda): pass
+        elif isInstanceOf(node.value,ast.ListComp): pass
+        elif isInstanceOf(node.value,ast.Compare): pass
         else:
           pdb.set_trace()
       
@@ -415,7 +424,7 @@ def extractXml(prjPfx, filename):
 
   fixupFileDocstring(xml)
 
-  print "Extracted XML:\n", xml.write()  
+  # print "Extracted XML:\n", xml.write()  
   return xml
 
 def Test():
