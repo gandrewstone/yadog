@@ -2,19 +2,27 @@ Any tag is allowed; you can write handlers for them.
 
 The following tags are defined:
 
-TagVariable = "var"
-TagFunction = "fn"
-TagParam    = "arg"
-TagClass    = "class"
-TagMethod   = "method"
-TagField    = "field"
-TagCtor     = "ctor"
-TagFile     = "file"
+TagConst    = "const"           #?? A Constant definition, for example 'const int b' or '#define FOO'
+TagVariable = "var"             #?? Variable definition, for example: 'int a'
+TagFunction = "fn"              #?? Function definition
+TagParam    = "arg"             #?? An argument to a function. Must be a child of TagFunction
+TagClass    = "class"           #?? Class definition
+TagMethod   = "method"          #?? Class method definition. Must be a child of TagClass
+TagField    = "field"           #?? Field (class/structure member) definition. Must be a child of TagClass
+TagCtor     = "ctor"            #?? Constructor definition. Must be a child of TagClass
+TagFile     = "file"            #?? File node.  All child nodes are defined in this file.
 TagDoc      = "doc"
-TagSection  = "section"
-TagBrief    = "brief"
-TagDesc     = "desc"
+TagSection  = "section"         #?? Section definition.  A section is an arbitrary construct (i.e. not extracted from to the programming language) that you may use to organise your documentation
+TagBrief    = "brief"           #?? Brief help.  Must be a child of a ConstructTag tag.
+TagDesc     = "desc"            #?? The full documentation of this item.  Must be a child of a ConstructTag tag.
+TagDecl     = "decl"            #?? The function declaration, for example: 'foofn(int a, int b)'.  Must be a child of TagFunction
 
+TagRequires = "requires"        #?? This module requires another library (or include file)
+
+TagRef      = "ref"             #?? A reference to another function or class
+TagLicense  = "license"         #?? The file's license
+TagReturn   = "return"          #?? The return value
+TagException = "exception"      #?? A exception that can be raised
 
 
 Normal Language/Project Tags:
